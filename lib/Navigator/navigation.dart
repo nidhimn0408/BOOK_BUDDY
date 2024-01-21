@@ -1,3 +1,4 @@
+import 'package:bookbuddy/Navigator/profile/profile.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,7 +27,7 @@ class _homeState extends State<NavigationMenu> {
     HomePage(),
     SignUp(),
     LoginPage(),
-    LoginPage(),
+    Profile(),
     LoginPage()
 
   ];
