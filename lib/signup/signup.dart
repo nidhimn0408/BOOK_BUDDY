@@ -21,9 +21,9 @@ class _SignUpState extends State<SignUp> {
     String cPassword = cPasswordController.text.trim();
 
     if (email == "" || password == "" || cPassword == "") {
-      log("Please fill all the details!");
+      showError("Please fill all the details!");
     } else if (password != cPassword) {
-      log("Passwords do not match!");
+      showError("Passwords do not match!");
     } else {
       try {
         UserCredential userCredential =
@@ -36,10 +36,35 @@ class _SignUpState extends State<SignUp> {
           Navigator.pop(context);
         }
       } on FirebaseAuthException catch (ex) {
-        log("FirebaseAuthException: ${ex.message}");
-        // Handle different error scenarios if needed
+        handleError(ex.code);
+      } catch (ex) {
+        handleError("An unexpected error occurred");
       }
     }
+  }
+
+  void showError(String message) {
+    // Display an error message to the user
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void handleError(String errorCode) {
+    String errorMessage = "An error occurred. Please try again.";
+    switch (errorCode) {
+      case "weak-password":
+        errorMessage = "The password provided is too weak.";
+        break;
+      case "email-already-in-use":
+        errorMessage = "The account already exists for that email.";
+        break;
+    // Add more cases for specific error codes if needed
+    }
+    showError(errorMessage);
   }
 
   @override

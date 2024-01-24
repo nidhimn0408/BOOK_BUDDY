@@ -1,16 +1,57 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../Navigator/navigation.dart';
 import '../signup/signup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  void login() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+
+    if (email == "" || password == "") {
+      // Provide feedback to the user about empty fields
+      Get.snackbar("Error", "Please fill in all fields");
+      return;
+    }
+
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+
+      if (userCredential.user != null) {
+        // Navigate to the home screen using GetX
+        Get.offAll(() => NavigationMenu());
+      }
+    } on FirebaseAuthException catch (ex) {
+      // Provide feedback to the user about authentication failure
+      String errorMessage = "Authentication failed";
+
+      switch (ex.code) {
+        case "user-not-found":
+          errorMessage = "User not found. Please check your email.";
+          break;
+        case "wrong-password":
+          errorMessage = "Wrong password. Please try again.";
+          break;
+      // Add more cases as needed
+      }
+
+      Get.snackbar("Error", errorMessage);
+    } catch (ex) {
+      // Handle other exceptions
+      Get.snackbar("Error", "An unexpected error occurred. Please try again later.");
+      log("Unexpected error during login: $ex");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFD3AFE0), // Set the correct background color
+      backgroundColor: Color(0xFFD3AFE0),
       body: Center(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -61,14 +102,42 @@ class LoginPage extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 20.0),
-                            _buildInputField('Email'),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: TextField(
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                obscureText: false,
+                              ),
+                            ),
                             SizedBox(height: 10.0),
-                            _buildInputField('Password'),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: TextField(
+                                controller: passwordController,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                obscureText: true,
+                              ),
+                            ),
                             SizedBox(height: 20.0),
                             ElevatedButton(
                               onPressed: () {
                                 // Implement your login logic here
-                                Get.to(() => const NavigationMenu());
+                                login();
                               },
                               child: Text('Log In'),
                             ),
@@ -93,23 +162,6 @@ class LoginPage extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildInputField(String hintText) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: hintText,
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        obscureText: hintText.toLowerCase().contains('password'),
       ),
     );
   }
