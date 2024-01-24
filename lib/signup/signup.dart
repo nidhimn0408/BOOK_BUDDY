@@ -1,7 +1,7 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../login/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -11,6 +11,37 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController cPasswordController = TextEditingController();
+
+  void createAccount() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String cPassword = cPasswordController.text.trim();
+
+    if (email == "" || password == "" || cPassword == "") {
+      log("Please fill all the details!");
+    } else if (password != cPassword) {
+      log("Passwords do not match!");
+    } else {
+      try {
+        UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        if (userCredential.user != null) {
+          // Only navigate if account creation is successful
+          Navigator.pop(context);
+        }
+      } on FirebaseAuthException catch (ex) {
+        log("FirebaseAuthException: ${ex.message}");
+        // Handle different error scenarios if needed
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,18 +87,57 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             SizedBox(height: 20.0),
-                            _buildInputField('Username'),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: TextField(
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                            ),
                             SizedBox(height: 20.0),
-                            _buildInputField('Email'),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: TextField(
+                                controller: passwordController,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                obscureText: true,
+                              ),
+                            ),
                             SizedBox(height: 20.0),
-                            _buildInputField('Password'),
-                            SizedBox(height: 20.0),
-                            _buildInputField('Confirm Password'),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              child: TextField(
+                                controller: cPasswordController,
+                                decoration: InputDecoration(
+                                  labelText: 'Confirm Password',
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                obscureText: true,
+                              ),
+                            ),
                             SizedBox(height: 20.0),
                             ElevatedButton(
                               onPressed: () {
                                 // Implement sign-up logic here
-                                Get.to(() => const LoginPage());
+                                createAccount();
                               },
                               style: ElevatedButton.styleFrom(
                                 primary: Color(0xFF8D898E),
@@ -98,23 +168,6 @@ class _SignUpState extends State<SignUp> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildInputField(String hintText) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: hintText,
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        obscureText: hintText.toLowerCase().contains('password'),
       ),
     );
   }
