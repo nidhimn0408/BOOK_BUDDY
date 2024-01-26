@@ -62,7 +62,7 @@ class _SignUpState extends State<SignUp> {
       case "email-already-in-use":
         errorMessage = "The account already exists for that email.";
         break;
-    // Add more cases for specific error codes if needed
+    // Add more cases for specific error codes if   needed
     }
     showError(errorMessage);
   }
