@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../login/login.dart';
+import 'create_club.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -112,7 +113,11 @@ class _HomePageState extends State<HomePage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Implement Create Club logic here
+                    // Navigate to CreateClubPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreateClubPage()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Color(0xFF753F7D),

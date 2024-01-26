@@ -12,7 +12,9 @@ import 'dart:io';
 
 import '../login/login.dart';
 import '../signup/signup.dart';
+import 'chat/chat.dart';
 import 'home/home.dart';
+import 'notification/notification.dart';
 
 class NavigationMenu extends StatefulWidget {
   const NavigationMenu({super.key});
@@ -25,17 +27,16 @@ class _homeState extends State<NavigationMenu> {
   int index=0;
   final screens=[
     HomePage(),
-    SignUp(),
+    ChatScreen(),
     LoginPage(),
     Profile(),
-    LoginPage()
-
+    NotificationsPage()
   ];
   @override
   Widget build(BuildContext context) {
     final items= [
       Icon(Icons.home),
-      Icon(Icons.person_add_outlined),
+      Icon(Icons.chat_bubble),
       Icon(Icons.menu_book),
       Icon(Icons.supervised_user_circle),
       Icon(Icons.notification_add),
@@ -49,7 +50,7 @@ class _homeState extends State<NavigationMenu> {
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
         animationDuration: Duration(
-            milliseconds: 100),
+            milliseconds: 50),
 
         items: items,
         index: index,
