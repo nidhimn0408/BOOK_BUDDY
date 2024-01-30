@@ -30,10 +30,12 @@ class BookDetailsHeader extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-             MyBackButton(),
-            SvgPicture.asset(
-              "assets/images/heart.svg",
-              color: Theme.of(context).colorScheme.background,
+             const MyBackButton(),
+            ColorFiltered(
+              colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.background, BlendMode.srcIn),
+              child: SvgPicture.asset(
+                "assets/images/heart.svg",
+              ),
             ),
           ],
         ),

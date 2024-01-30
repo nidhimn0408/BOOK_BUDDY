@@ -79,7 +79,6 @@ class BookController extends GetxController {
     var uuid = const Uuid();
     var filename = uuid.v1();
     var storageRef = storage.ref().child("Images/$filename");
-    var response = await storageRef.putFile(image);
     String downloadURL = await storageRef.getDownloadURL();
     imageUrl.value = downloadURL;
     print("Download URL: $downloadURL");

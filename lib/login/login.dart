@@ -6,8 +6,8 @@ import '../signup/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatelessWidget {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   LoginPage({super.key});
 
