@@ -9,6 +9,8 @@ class LoginPage extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  LoginPage({super.key});
+
   void login() async {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
@@ -24,7 +26,7 @@ class LoginPage extends StatelessWidget {
 
       if (userCredential.user != null) {
         // Navigate to the home screen using GetX
-        Get.offAll(() => NavigationMenu());
+        Get.offAll(() => const NavigationMenu());
       }
     } on FirebaseAuthException catch (ex) {
       // Provide feedback to the user about authentication failure
@@ -51,7 +53,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFD3AFE0),
+      backgroundColor: const Color(0xFFD3AFE0),
       body: Center(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -70,21 +72,21 @@ class LoginPage extends StatelessWidget {
                     height: 80,
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 30.0),
-                        padding: EdgeInsets.all(16.0),
+                        margin: const EdgeInsets.only(bottom: 30.0),
+                        padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
-                          color: Color(0xFFD9D9D9),
+                          color: const Color(0xFFD9D9D9),
                           borderRadius: BorderRadius.circular(28.0),
                         ),
                         child: Column(
                           children: [
-                            Text(
+                            const Text(
                               'Book Buddy',
                               style: TextStyle(
                                 fontSize: 40.0,
@@ -92,8 +94,8 @@ class LoginPage extends StatelessWidget {
                                 color: Colors.deepPurple,
                               ),
                             ),
-                            SizedBox(height: 10.0),
-                            Text(
+                            const SizedBox(height: 10.0),
+                            const Text(
                               'Log In',
                               style: TextStyle(
                                 fontSize: 18.0,
@@ -101,9 +103,9 @@ class LoginPage extends StatelessWidget {
                                 color: Colors.black,
                               ),
                             ),
-                            SizedBox(height: 20.0),
+                            const SizedBox(height: 20.0),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: const EdgeInsets.symmetric(vertical: 10),
                               child: TextField(
                                 controller: emailController,
                                 decoration: InputDecoration(
@@ -117,9 +119,9 @@ class LoginPage extends StatelessWidget {
                                 obscureText: false,
                               ),
                             ),
-                            SizedBox(height: 10.0),
+                            const SizedBox(height: 10.0),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: const EdgeInsets.symmetric(vertical: 10),
                               child: TextField(
                                 controller: passwordController,
                                 decoration: InputDecoration(
@@ -133,21 +135,21 @@ class LoginPage extends StatelessWidget {
                                 obscureText: true,
                               ),
                             ),
-                            SizedBox(height: 20.0),
+                            const SizedBox(height: 20.0),
                             ElevatedButton(
                               onPressed: () {
                                 // Implement your login logic here
                                 login();
                               },
-                              child: Text('Log In'),
+                              child: const Text('Log In'),
                             ),
-                            SizedBox(height: 10.0),
+                            const SizedBox(height: 10.0),
                             TextButton(
                               onPressed: () {
                                 // Navigate to SignUp page
                                 Get.to(() => const SignUp());
                               },
-                              child: Text(
+                              child: const Text(
                                 'Create New Account',
                                 style: TextStyle(fontSize: 14.0),
                               ),

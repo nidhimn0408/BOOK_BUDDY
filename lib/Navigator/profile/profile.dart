@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  const Profile({super.key});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -11,10 +11,10 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFD3AFE0),
+      backgroundColor: const Color(0xFFD3AFE0),
       appBar: AppBar(
-        backgroundColor: Color(0xFFD3AFE0),
-        title: Text('PROFILE', style: TextStyle(fontSize: 20) ),
+        backgroundColor: const Color(0xFFD3AFE0),
+        title: const Text('PROFILE', style: TextStyle(fontSize: 20) ),
         centerTitle: true,
       ),
       body: Padding(
@@ -23,29 +23,29 @@ class _ProfileState extends State<Profile> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // User Profile Information
-            CircleAvatar(
+            const CircleAvatar(
               radius: 50,
               // You can replace the placeholder image with the user's profile picture
               backgroundImage: AssetImage('assets/images/symbol.jpg'),
             ),
-            SizedBox(height: 8),
-            Text(
+            const SizedBox(height: 8),
+            const Text(
               'John Doe', // Replace with the user's name
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 4),
-            Text(
+            const SizedBox(height: 4),
+            const Text(
               'johndoe@example.com', // Replace with the user's email
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 4),
-            Text(
+            const SizedBox(height: 4),
+            const Text(
               'Edit profile', // Replace with the user's email
               style: TextStyle(
                 fontSize: 12,
@@ -53,7 +53,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             // Additional user details or preferences can be displayed here
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             BookStrip(
               leftText: 'Currently Reading Books ',
               rightText: '>',
@@ -61,7 +61,7 @@ class _ProfileState extends State<Profile> {
 
               },
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             BookStrip(
               leftText: 'Join Book Club',
               rightText: '>',
@@ -69,7 +69,7 @@ class _ProfileState extends State<Profile> {
 
               },
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             BookStrip(
               leftText: 'Create Book Club',
               rightText: '>',
@@ -77,7 +77,7 @@ class _ProfileState extends State<Profile> {
 
               },
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             BookStrip(
               leftText: 'Privacy Settings',
               rightText: '>',
@@ -85,7 +85,7 @@ class _ProfileState extends State<Profile> {
 
               },
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             BookStrip(
               leftText: 'Email and Notification Setting',
               rightText: '>',
@@ -93,7 +93,7 @@ class _ProfileState extends State<Profile> {
 
               },
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             BookStrip(
               leftText: 'Delete My Account',
               rightText: '>',
@@ -113,7 +113,7 @@ class BookStrip extends StatelessWidget {
   final String rightText;
   final VoidCallback onPressed;
 
-  BookStrip({
+  const BookStrip({super.key, 
     required this.leftText,
     required this.rightText,
     required this.onPressed,
@@ -125,8 +125,8 @@ class BookStrip extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: 40,
-        color: Color(0xFF9B579D), // You can change the color as needed
-        margin: EdgeInsets.symmetric(vertical: 8),
+        color: const Color(0xFF9B579D), // You can change the color as needed
+        margin: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -134,14 +134,14 @@ class BookStrip extends StatelessWidget {
               padding: const EdgeInsets.only(left: 8.0),
               child: Text(
                 leftText,
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: Text(
                 rightText,
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
           ],

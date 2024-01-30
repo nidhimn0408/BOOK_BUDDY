@@ -1,10 +1,8 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  const SignUp({super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -70,7 +68,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFD3AFE0),
+      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
       body: Center(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -89,21 +87,21 @@ class _SignUpState extends State<SignUp> {
                     height: 80,
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(bottom: 30.0),
-                        padding: EdgeInsets.all(20.0),
+                        margin: const EdgeInsets.only(bottom: 30.0),
+                        padding: const EdgeInsets.all(20.0),
                         decoration: BoxDecoration(
-                          color: Color(0xFFD9D9D9),
+                          color: const Color(0xFFD9D9D9),
                           borderRadius: BorderRadius.circular(28.0),
                         ),
                         child: Column(
                           children: [
-                            Text(
+                            const Text(
                               'Sign Up',
                               style: TextStyle(
                                 color: Colors.black,
@@ -111,9 +109,9 @@ class _SignUpState extends State<SignUp> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(height: 20.0),
+                            const SizedBox(height: 20.0),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: const EdgeInsets.symmetric(vertical: 10),
                               child: TextField(
                                 controller: emailController,
                                 decoration: InputDecoration(
@@ -126,9 +124,9 @@ class _SignUpState extends State<SignUp> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 20.0),
+                            const SizedBox(height: 20.0),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: const EdgeInsets.symmetric(vertical: 10),
                               child: TextField(
                                 controller: passwordController,
                                 decoration: InputDecoration(
@@ -142,9 +140,9 @@ class _SignUpState extends State<SignUp> {
                                 obscureText: true,
                               ),
                             ),
-                            SizedBox(height: 20.0),
+                            const SizedBox(height: 20.0),
                             Container(
-                              margin: EdgeInsets.symmetric(vertical: 10),
+                              margin: const EdgeInsets.symmetric(vertical: 10),
                               child: TextField(
                                 controller: cPasswordController,
                                 decoration: InputDecoration(
@@ -158,15 +156,15 @@ class _SignUpState extends State<SignUp> {
                                 obscureText: true,
                               ),
                             ),
-                            SizedBox(height: 20.0),
+                            const SizedBox(height: 20.0),
                             ElevatedButton(
                               onPressed: () {
                                 // Implement sign-up logic here
                                 createAccount();
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Color(0xFF8D898E),
-                                padding: EdgeInsets.symmetric(
+                                backgroundColor: const Color(0xFF8D898E),
+                                padding: const EdgeInsets.symmetric(
                                   vertical: 12.0,
                                   horizontal: 85.0,
                                 ),
@@ -174,7 +172,7 @@ class _SignUpState extends State<SignUp> {
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),
                               ),
-                              child: Text(
+                              child: const Text(
                                 'SIGN UP',
                                 style: TextStyle(
                                   color: Colors.black,
