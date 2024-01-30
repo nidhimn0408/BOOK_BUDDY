@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../login/login.dart';
+import 'create_club.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -112,7 +113,11 @@ class _HomePageState extends State<Home> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Implement Create Club logic here
+                    // Navigate to CreateClubPage
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CreateClubPage()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary,
