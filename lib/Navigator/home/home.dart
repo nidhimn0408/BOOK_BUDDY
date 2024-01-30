@@ -3,10 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../login/login.dart';
+import '../profile/profile.dart';
 import 'create_club.dart';
+import 'my_books/my_books.dart';
+import 'notification/notification.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({Key? key});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -83,7 +86,6 @@ class _HomePageState extends State<Home> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 20.0),
             Image.asset(
               'assets/images/group.jpg', // Replace with your image path
               width: 400.0,
@@ -127,6 +129,51 @@ class _HomePageState extends State<Home> {
                     ),
                   ),
                   child: const Text('Create Club'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 40.0),
+            const Text(
+              'Track your progress',
+              style: TextStyle(fontSize: 18.0),
+            ),
+            const SizedBox(height: 20.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement My Book logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const myBook()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15.0,
+                      horizontal: 30.0,
+                    ),
+                  ),
+                  child: const Text('My Books'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement Notification logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const NotificationsPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15.0,
+                      horizontal: 30.0,
+                    ),
+                  ),
+                  child: const Text('Notification'),
                 ),
               ],
             ),

@@ -11,7 +11,7 @@ import '../signup/signup.dart';
 import 'chat/chat.dart';
 import 'home/home.dart';
 import '../AddNewBook/AddNewBook.dart';
-import 'notification/notification.dart';
+import 'home/notification/notification.dart';
 
 class NavigationMenu extends StatefulWidget {
   const NavigationMenu({super.key});
@@ -26,7 +26,7 @@ class _homeState extends State<NavigationMenu> {
     const Home(),
     const ChatScreen(),
     const HomePage(),
-    const Profile(),
+    const Profile(mpp: {},),
     const AddNewBookPage()
   ];
   @override
