@@ -91,10 +91,11 @@ class _EditProfileState extends State<Profile> {
     log("Here");
 
     age ??= (mpp['phone_number']!=-1)?mpp['age']:-1;
-    log("Here");
+    log("Here1");
     showDialog(
         context: context,
         builder: (context) {
+          log("Here2");
           return BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
             child: AlertDialog(
@@ -131,33 +132,9 @@ class _EditProfileState extends State<Profile> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    try {
-                      Map<String, dynamic> newData1 = {
-                        'address': address,
-                        'phone_number': phNo,
-                        'age': age
-                      };
-                      Map<String, dynamic> newData2 = {
-                        'user_name': name,
-                      };
-
-                      var uid = FirebaseAuth.instance.currentUser?.uid;
-                      log(uid!);
-                      await FirebaseFirestore.instance.collection("users").doc(uid).update(newData2).then((res){log("Done first");});
-
-                      await FirebaseFirestore.instance.collection("user_details").doc(uid).update(newData1)
-                          .then((res) {
-                            log("Done second");
-                            Navigator.of(context).pop({...mpp, ...newData1}); // Return the updated data
-                      });
-                    }
-                    catch (e) {
-                      _showSnackBar(
-                          "Couldn't add data! ${e.toString()}",
-                          Colors.red
-                      );
-                    }
+                    Navigator.pop(context, true);
                   },
+
                   child: Text(
                     "Yes",
                     style: GoogleFonts.rajdhani(
@@ -172,109 +149,63 @@ class _EditProfileState extends State<Profile> {
           );
         }
     );
+
     return mpp;
   }
 
   void deleteProfile(){
     showDialog(
-        context: context,
-        builder: (context) {
-          return BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-            child: AlertDialog(
-              backgroundColor: Colors.redAccent,
-              title: Text(
-                "DELETE PROFILE?",
-                style: GoogleFonts.rajdhani(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700
-                ),
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.deepPurpleAccent,
+        title: Text(
+          "Save Profile?",
+          style: GoogleFonts.rajdhani(
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        content: Text(
+          "Are you sure you want to save your details?",
+          style: GoogleFonts.rajdhani(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: Text(
+              "No",
+              style: GoogleFonts.rajdhani(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
               ),
-              content: Text(
-                "ARE YOU SURE YOU WANT TO DELETE YOUR PROFILE?",
-                style: GoogleFonts.rajdhani(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                    "No",
-                    style: GoogleFonts.rajdhani(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    try {
-                      User? user = FirebaseAuth.instance.currentUser;
-                      await user?.delete().then((result){
-                        showDialog(
-                            context: context,
-                            builder: (context){
-                              return BackdropFilter(
-                                filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-                                child: AlertDialog(
-                                  backgroundColor: Colors.greenAccent,
-                                  title: Text(
-                                    "Profile Deleted!",
-                                    style: GoogleFonts.rajdhani(
-                                        color: Colors.white,
-                                        fontSize: 30,
-                                        fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                  content: Text(
-                                    "Your profile was successfully deleted!",
-                                    style: GoogleFonts.rajdhani(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 20
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-                        );
-                        Navigator.popUntil(
-                            context, (route) => false
-                        );
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginPage())
-                        );
-                      });
-                    }
-                    catch (e) {
-                      _showSnackBar(
-                          "Couldn't delete profile, try again! ${e.toString()}",
-                          Colors.red
-                      );
-                    }
-                  },
-                  child: Text(
-                    "Yes",
-                    style: GoogleFonts.rajdhani(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700
-                    ),
-                  ),
-                ),
-              ],
             ),
-          );
-        }
+          ),
+          TextButton(
+            onPressed: () async {
+              // Your save profile logic
+              Navigator.of(context).pop(true); // Return true
+            },
+            child: Text(
+              "Yes",
+              style: GoogleFonts.rajdhani(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
+
   }
 
   void imagePicker() async{
@@ -492,11 +423,11 @@ class _EditProfileState extends State<Profile> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () async{
-                                    var updatedData = await saveProfile(widget.mpp);
-                                    if (updatedData != null) {
+                                    await saveProfile(widget.mpp).then((updatedData){
                                       Navigator.of(context).pop(updatedData);
+                                      setState(() {});
                                     }
-                                    setState(() {});
+                                    );
                                   },
 
                                   style: ElevatedButton.styleFrom(

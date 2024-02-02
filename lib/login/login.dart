@@ -5,11 +5,16 @@ import '../Navigator/navigation.dart';
 import '../signup/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  LoginPage({super.key});
 
   void login() async {
     String email = emailController.text.trim();
@@ -22,12 +27,17 @@ class LoginPage extends StatelessWidget {
     }
 
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-
-      if (userCredential.user != null) {
-        // Navigate to the home screen using GetX
-        Get.offAll(() => const NavigationMenu());
-      }
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password)
+          .then((userCredential){
+        if (userCredential.user != null) {
+          Navigator.popUntil(context, (route) => false);
+          Navigator.push((context),
+            MaterialPageRoute(builder: (context) {
+              return const NavigationMenu();
+            }),
+          );
+        }
+      });
     } on FirebaseAuthException catch (ex) {
       // Provide feedback to the user about authentication failure
       String errorMessage = "Authentication failed";
@@ -45,7 +55,7 @@ class LoginPage extends StatelessWidget {
       Get.snackbar("Error", errorMessage);
     } catch (ex) {
       // Handle other exceptions
-      Get.snackbar("Error", "An unexpected error occurred. Please try again later.");
+      // Get.snackbar("Error", "An unexpected error occurred. Please try again later.");
       log("Unexpected error during login: $ex");
     }
   }
@@ -168,3 +178,4 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+

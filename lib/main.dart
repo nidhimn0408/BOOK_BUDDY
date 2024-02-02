@@ -14,22 +14,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-    MaterialApp(
-      title: 'Book Buddy',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const SplashScreen(), // Set SplashScreen as the home
-      routes: {
-        '/home': (context) => MyApp(), // Navigate to MyApp after splash screen
-      },
-    ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -38,11 +27,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       title: 'Book Buddy',
       home: (FirebaseAuth.instance.currentUser != null)
           ? const NavigationMenu()
-          : LoginPage(),
+          : const LoginPage(),
     );
   }
 }
