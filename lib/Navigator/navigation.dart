@@ -1,10 +1,7 @@
+import 'package:bookbuddy/Navigator/profile/account.dart';
 import 'package:bookbuddy/Navigator/profile/profile.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-
-
-
-
 
 import '../Homepage/Homepage.dart';
 import '../signup/signup.dart';
@@ -21,14 +18,30 @@ class NavigationMenu extends StatefulWidget {
 }
 
 class _homeState extends State<NavigationMenu> {
+  late final Map<String, dynamic> mpp;
+
+  @override
+  void initState(){
+    // mpp = call async func to fetch data
+    super.initState();
+  }
+
   int index=0;
   final screens=[
     const Home(),
     const ChatScreen(),
     const HomePage(),
-    const Profile(mpp: {},),
+    const Account(),
+    // const Profile(mpp: {
+    //   "phone_number":  9113289540,
+    //   "age": 21,
+    //   "user_name": "Pulkit Raina",
+    //   "address": "F1 SG V"
+    // },),
     const AddNewBookPage()
   ];
+
+
   @override
   Widget build(BuildContext context) {
     final items= [

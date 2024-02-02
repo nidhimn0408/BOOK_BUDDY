@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../login/login.dart';
 import '../profile/profile.dart';
 import 'create_club.dart';
+import 'join_club.dart';
 import 'my_books/my_books.dart';
 import 'notification/notification.dart';
 
@@ -63,7 +64,7 @@ class _HomePageState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -103,6 +104,10 @@ class _HomePageState extends State<Home> {
                 ElevatedButton(
                   onPressed: () {
                     // Implement Join Club logic here
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const JoinClubPage()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary,

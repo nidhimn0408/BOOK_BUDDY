@@ -1,11 +1,14 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:velocity_x/velocity_x.dart';
 import '../../Homepage/Widgets/top_app_bar.dart';
 import '../../login/login.dart';
 
@@ -21,7 +24,7 @@ class Profile extends StatefulWidget {
 class _EditProfileState extends State<Profile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  get defImg => "https://firebasestorage.googleapis.com/v0/b/namma-metro-36b56.appspot.com/o/images%2Fprofile_pic.png?alt=media&token=b7771536-f13e-4c68-af84-8dc013dfdb5f";
+  get defImg => "https://firebasestorage.googleapis.com/v0/b/bookbuddy-62925.appspot.com/o/images%2F1706677934840?alt=media&token=15bb1dc5-9978-4e3d-b043-8471d88e42cd";
 
   get secondary => null;
 
@@ -39,13 +42,22 @@ class _EditProfileState extends State<Profile> {
       ),
     );
   }
+  void logOut() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.popUntil(context, (route) => route.isFirst);
+    Navigator.pushReplacement(
+      context,
+      CupertinoPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 
   TextEditingController nameCtrl = TextEditingController();
   TextEditingController addressCtrl = TextEditingController();
   TextEditingController phNoCtrl = TextEditingController();
   TextEditingController ageCtrl = TextEditingController();
 
-  Future<bool> saveProfile(Map<String, dynamic> mpp){
+  Future<Map<String, dynamic>> saveProfile(Map<String, dynamic> mpp) async {
+    log("Called");
     String name = nameCtrl.text;
     String address = addressCtrl.text;
     String phNostr = phNoCtrl.text.trim();
@@ -59,8 +71,13 @@ class _EditProfileState extends State<Profile> {
       age ??= (mpp['phone_number']!=-1)?mpp['age']:-1;
     }
 
+    log("Here");
+
     if(name == '') name = mpp['user_name'];
+    log("Here");
+
     if(address == '') address = mpp['address'];
+    log("Here");
 
     if(phNostr.isEmpty){
       phNo = (mpp['phone_number']!=-1)?mpp['phone_number']:phNo;
@@ -71,9 +88,10 @@ class _EditProfileState extends State<Profile> {
       phNo = int.tryParse(phNostr);
       phNo ??= (mpp['phone_number']!=-1)?mpp['phone_number']:-1;
     }
+    log("Here");
 
     age ??= (mpp['phone_number']!=-1)?mpp['age']:-1;
-
+    log("Here");
     showDialog(
         context: context,
         builder: (context) {
@@ -124,12 +142,13 @@ class _EditProfileState extends State<Profile> {
                       };
 
                       var uid = FirebaseAuth.instance.currentUser?.uid;
-
-                      await FirebaseFirestore.instance.collection("users").doc(uid).update(newData2);
+                      log(uid!);
+                      await FirebaseFirestore.instance.collection("users").doc(uid).update(newData2).then((res){log("Done first");});
 
                       await FirebaseFirestore.instance.collection("user_details").doc(uid).update(newData1)
                           .then((res) {
-                        Navigator.of(context).pop(true);
+                            log("Done second");
+                            Navigator.of(context).pop({...mpp, ...newData1}); // Return the updated data
                       });
                     }
                     catch (e) {
@@ -153,7 +172,7 @@ class _EditProfileState extends State<Profile> {
           );
         }
     );
-    return false as Future<bool>;
+    return mpp;
   }
 
   void deleteProfile(){
@@ -274,7 +293,7 @@ class _EditProfileState extends State<Profile> {
       await FirebaseFirestore.instance.collection("user_details").doc(FirebaseAuth.instance.currentUser!.uid).set({
         "profile_pic": imgURL,
       }).then((res) {
-        Navigator.pop(context);
+        setState(() {});
       });
     }
     catch(e){
@@ -283,16 +302,64 @@ class _EditProfileState extends State<Profile> {
     }
   }
 
+  Future<void> _confirmLogoutDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Logout'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Are you sure you want to logout?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                logOut();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        backgroundColor: secondary,
-        appBar: CustomTopAppBar(
-          text: "Edit Profile",
-          show: true,
-          context: context,
+        backgroundColor: Vx.purple300,
+        appBar: AppBar(
+          foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                // Display confirmation dialog
+                _confirmLogoutDialog();
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 250.0),
+              child: Image.asset(
+                'assets/images/book.png', // Replace with your image path
+                width: 80.0,
+                height: 80.0,
+              ),
+            ),
+          ],
         ),
         body: Builder(
             builder: (context) {
@@ -336,31 +403,31 @@ class _EditProfileState extends State<Profile> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20,),
+                        const SizedBox(height: 2,),
                         Form(
                             child: Column(
                               children: [
                                 ListTile(
                                   leading: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(100),
-                                        color: Colors.black54
-                                    ),
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(100),
-                                        child: const Icon(Icons.email, color: Colors.white,)
-                                    ),
+                                    width: 30,
+                                    height: 10,
+                                    // decoration: BoxDecoration(
+                                    //     borderRadius: BorderRadius.circular(100),
+                                    //     color: Colors.black54
+                                    // ),
+                                    //child: ClipRRect(
+                                        //borderRadius: BorderRadius.circular(100),
+                                        //child: const Icon(Icons.email, color: Colors.white,)
+                                    //),
                                   ),
-                                  title: Text(
-                                    "${widget.mpp['email']??"genericemail@gmail.com"}",
-                                    style: GoogleFonts.rajdhani(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white
-                                    ),
-                                  ),
+                                  // title: Text(
+                                  //   "${widget.mpp['email']??"genericemail@gmail.com"}",
+                                  //   style: GoogleFonts.rajdhani(
+                                  //       fontSize: 20,
+                                  //       fontWeight: FontWeight.w700,
+                                  //       color: Colors.white
+                                  //   ),
+                                  // ),
                                 ),
                                 Container(
                                   margin: const EdgeInsets.symmetric(vertical: 10),
@@ -382,13 +449,13 @@ class _EditProfileState extends State<Profile> {
                                   child: TextField(
                                     controller: addressCtrl,
                                     decoration: InputDecoration(
-                                        hintText: "${(widget.mpp['address']!='`')?widget.mpp['address'] : "Not set yet"}",
+                                        hintText: "${(widget.mpp['address']!='`')?widget.mpp['address'] : "Address"}",
                                         fillColor: Colors.grey.shade100,
                                         filled: true,
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(80),
                                         ),
-                                        prefixIcon: const Icon(Icons.map)
+                                        prefixIcon: const Icon(Icons.location_on)
                                     ),
                                   ),
                                 ),
@@ -407,7 +474,7 @@ class _EditProfileState extends State<Profile> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 10,),
+                                const SizedBox(height: 2,),
                                 Container(
                                   margin: const EdgeInsets.symmetric(vertical: 10),
                                   child: TextField(
@@ -425,12 +492,11 @@ class _EditProfileState extends State<Profile> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () async{
-                                    await saveProfile(widget.mpp).then((res) {
-                                      if(res) Navigator.of(context).pop();
-                                    });
-                                    setState(() {
-
-                                    });
+                                    var updatedData = await saveProfile(widget.mpp);
+                                    if (updatedData != null) {
+                                      Navigator.of(context).pop(updatedData);
+                                    }
+                                    setState(() {});
                                   },
 
                                   style: ElevatedButton.styleFrom(
