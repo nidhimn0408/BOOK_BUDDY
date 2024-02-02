@@ -1,3 +1,6 @@
+import 'package:velocity_x/velocity_x.dart';
+
+import '../../Navigator/profile/account.dart';
 import '../../Navigator/profile/profile.dart';
 //import 'package:e_book/Controller/AuthController.dart';
 import 'package:flutter/material.dart';
@@ -27,18 +30,26 @@ class HomeAppBar extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            Get.to(const Profile(mpp: {},));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Account()),
+            );
           },
           child: CircleAvatar(
-              radius: 25,
-              backgroundColor: Theme.of(context).colorScheme.background,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                //  child: Image.network(
-                 //     authController.auth.currentUser!.photoURL!)
-              )
+            radius: 25,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Icon(
+                Icons.account_circle, // Replace with your desired profile icon
+                size: 40,
+                color: Vx.purple600, // Adjust the color as needed
+              ),
+            ),
           ),
         )
+
+
       ],
     );
   }

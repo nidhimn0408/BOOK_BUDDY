@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../AddNewBook/AddNewBook.dart';
 import '../../../Homepage/HomePage.dart';
+import '../../profile/account.dart';
 import '../../profile/profile.dart';
 
 class myBook extends StatefulWidget {
@@ -66,7 +67,7 @@ class _ProfileState extends State<myBook> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Profile(mpp: {},)),
+                  MaterialPageRoute(builder: (context) => Account()),
                 );
 
               },

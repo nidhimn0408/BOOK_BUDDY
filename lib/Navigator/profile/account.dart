@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 import '../../login/login.dart';
 
@@ -180,7 +181,7 @@ class _AccountState extends State<Account> {
 
       return {
         "user_name": data1?['user_name'] ?? "Profile",
-        "email": data1?['email'] ?? "genericemail@gmail.com",
+        "email": data1?['email'] ?? "",
         "address": data2?['address'] ?? "",
         "profile_pic": data2?['profile_pic'] ?? defImg,
         "age": data2?['age'] ?? -1,
@@ -189,7 +190,7 @@ class _AccountState extends State<Account> {
     } catch (e) {
       return {
         'user_name': 'Profile',
-        'email': 'genericemail@gmail.com',
+        'email': '',
         'address': '',
         'profilePic': defImg,
         'age': -1,
@@ -201,7 +202,7 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: secondary,
+       backgroundColor: Vx.purple200,
       // appBar: CustomTopAppBar(
       //   text: "Account Details",
       //   show: true,
@@ -235,7 +236,7 @@ class _AccountState extends State<Account> {
             );
           } else {
             Map<String, dynamic> data =
-                snapShot.data ?? {"user_name": "Profile", "email": "genericemail@gmail.com", "address": "`", "profile_pic": defImg, "age": -1, "phone_number": -1};
+                snapShot.data ?? {"user_name": "Profile", "email": "", "address": "`", "profile_pic": defImg, "age": -1, "phone_number": -1};
             return SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
               child: Center(
@@ -308,13 +309,19 @@ class _AccountState extends State<Account> {
                     const SizedBox(height: 10,),
                     _ListBuilder(
                       data: "Age: ${data["age"] == -1 ? 'N/A' : data["age"]}",
-                      leadIcon: Icons.account_box_outlined,
+                      leadIcon: Icons.accessibility_new_outlined,
                       trailIcon: false,
                       onTap: () {},
                     ).buildListTile(),
                     _ListBuilder(
-                      data: "Address",
-                      leadIcon: Icons.map,
+                      data: "Address: ${data["address"] == -1 ? 'N/A' : data["address"]}",
+                      leadIcon: Icons.location_on,
+                      trailIcon: false,
+                      onTap: () {},
+                    ).buildListTile(),
+                    _ListBuilder(
+                      data: "Ph: ${data["phone_number"] == -1 ? 'N/A' : data["phone_number"]}",
+                      leadIcon: Icons.phone_android,
                       trailIcon: false,
                       onTap: () {},
                     ).buildListTile(),

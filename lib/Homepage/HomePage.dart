@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../Components/BookCard.dart';
 import '../Components/BookTile.dart';
 import '../Components/MyDrawer.dart';
@@ -9,9 +12,28 @@ import '../Homepage/Widgets/CategoryWidget.dart';
 import '../Homepage/Widgets/MyInputeTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+final _fs = FirebaseFirestore.instance;
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  Future<Map<String, dynamic>> getUserData() async {
+    try {
+      var id = FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot res1 = await _fs.collection("users").doc(id).get();
+
+      Map<String, dynamic>? data1 =
+          res1.data() as Map<String, dynamic>? ?? {};
+      return {
+        "user_name": data1?['user_name'] ?? "Profile",
+        "email": data1?['email'] ?? "",
+      };
+    } catch (e) {
+      return {
+        'user_name': 'Profile',
+        'email': '',
+      };
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,26 +60,33 @@ class HomePage extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                "Good Morining✌️",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                    ),
+                                "Hello ✌",
+                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  fontSize : 28,
+                                  color: Theme.of(context).colorScheme.background,
+                                ),
                               ),
-                              Text(
-                                "Nitish",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                    ),
+                              // Use the user's display name dynamically from getUserData
+                              FutureBuilder<Map<String, dynamic>>(
+                                future: getUserData(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    // Display a loading indicator while data is being fetched
+                                    return CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    // Handle error case
+                                    return Text("Error loading user data");
+                                  } else {
+                                    // Display user name dynamically
+                                    return Text(
+                                      " ${snapshot.data?['user_name']}",
+                                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                        fontSize : 28,
+                                        color: Theme.of(context).colorScheme.background,
+                                      ),
+                                    );
+                                  }
+                                },
                               ),
                             ],
                           ),
@@ -71,6 +100,7 @@ class HomePage extends StatelessWidget {
                                       .textTheme
                                       .labelSmall
                                       ?.copyWith(
+                                        fontSize: 14,
                                         color: Theme.of(context)
                                             .colorScheme
                                             .background,
