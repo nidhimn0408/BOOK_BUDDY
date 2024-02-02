@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:velocity_x/velocity_x.dart';
-import '../../Homepage/Widgets/top_app_bar.dart';
+//import '../../Homepage/Widgets/top_app_bar.dart';
 import '../../login/login.dart';
 
 class Profile extends StatefulWidget {
@@ -56,7 +56,7 @@ class _EditProfileState extends State<Profile> {
   TextEditingController phNoCtrl = TextEditingController();
   TextEditingController ageCtrl = TextEditingController();
 
-  Future<Map<String, dynamic>> saveProfile(Map<String, dynamic> mpp) async {
+  Future<bool> saveProfile(Map<String, dynamic> mpp) async {
     log("Called");
     String name = nameCtrl.text;
     String address = addressCtrl.text;
@@ -96,12 +96,104 @@ class _EditProfileState extends State<Profile> {
         context: context,
         builder: (context) {
           log("Here2");
+          return Builder(
+              builder: (context) {
+                return BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                  child: AlertDialog(
+                    backgroundColor: Colors.deepPurpleAccent,
+                    title: Text(
+                      "Save Profile?",
+                      style: GoogleFonts.rajdhani(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700
+                      ),
+                    ),
+                    content: Text(
+                      "Are you sure you want to save your details?",
+                      style: GoogleFonts.rajdhani(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 20
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: Text(
+                          "No",
+                          style: GoogleFonts.rajdhani(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700
+                          ),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          try {
+                            Map<String, dynamic> newData1 = {
+                              'address': address,
+                              'phone_number': phNo,
+                              'age': age
+                            };
+                            Map<String, dynamic> newData2 = {
+                              'user_name': name,
+                            };
+
+                            var uid = FirebaseAuth.instance.currentUser?.uid;
+                            log(uid!);
+                            await FirebaseFirestore.instance.collection("users").doc(uid).update(newData2).then((res){log("Done first");});
+
+                            await FirebaseFirestore.instance.collection("user_details").doc(uid).update(newData1)
+                                .then((res) {
+                              log("Done second");
+                              Navigator.of(context).pop(true); // Return the updated data
+                              setState(() {
+
+                              });
+                            });
+                          }
+                          catch (e) {
+                            _showSnackBar(
+                                "Couldn't add data! ${e.toString()}",
+                                Colors.red
+                            );
+                          }
+                        },
+                        child: Text(
+                          "Yes",
+                          style: GoogleFonts.rajdhani(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+          );
+        }
+    );
+ return false as Future<bool>;
+
+  }
+
+  void deleteProfile(){
+    showDialog(
+        context: context,
+        builder: (context) {
           return BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
             child: AlertDialog(
-              backgroundColor: Colors.deepPurpleAccent,
+              backgroundColor: Colors.redAccent,
               title: Text(
-                "Save Profile?",
+                "DELETE PROFILE?",
                 style: GoogleFonts.rajdhani(
                     color: Colors.white,
                     fontSize: 30,
@@ -109,17 +201,17 @@ class _EditProfileState extends State<Profile> {
                 ),
               ),
               content: Text(
-                "Are you sure you want to save your details?",
+                "ARE YOU SURE YOU WANT TO DELETE YOUR PROFILE?",
                 style: GoogleFonts.rajdhani(
                     color: Colors.white,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w700,
                     fontSize: 20
                 ),
               ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(false);
+                    Navigator.of(context).pop();
                   },
                   child: Text(
                     "No",
@@ -132,9 +224,52 @@ class _EditProfileState extends State<Profile> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    Navigator.pop(context, true);
+                    try {
+                      User? user = FirebaseAuth.instance.currentUser;
+                      await user?.delete().then((result){
+                        showDialog(
+                            context: context,
+                            builder: (context){
+                              return BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                                child: AlertDialog(
+                                  backgroundColor: Colors.greenAccent,
+                                  title: Text(
+                                    "Profile Deleted!",
+                                    style: GoogleFonts.rajdhani(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.w700
+                                    ),
+                                  ),
+                                  content: Text(
+                                    "Your profile was successfully deleted!",
+                                    style: GoogleFonts.rajdhani(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 20
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                        );
+                        Navigator.popUntil(
+                            context, (route) => false
+                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LoginPage())
+                        );
+                      });
+                    }
+                    catch (e) {
+                      _showSnackBar(
+                          "Couldn't delete profile, try again! ${e.toString()}",
+                          Colors.red
+                      );
+                    }
                   },
-
                   child: Text(
                     "Yes",
                     style: GoogleFonts.rajdhani(
@@ -148,62 +283,6 @@ class _EditProfileState extends State<Profile> {
             ),
           );
         }
-    );
-
-    return mpp;
-  }
-
-  void deleteProfile(){
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.deepPurpleAccent,
-        title: Text(
-          "Save Profile?",
-          style: GoogleFonts.rajdhani(
-            color: Colors.white,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        content: Text(
-          "Are you sure you want to save your details?",
-          style: GoogleFonts.rajdhani(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 20,
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(false);
-            },
-            child: Text(
-              "No",
-              style: GoogleFonts.rajdhani(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: () async {
-              // Your save profile logic
-              Navigator.of(context).pop(true); // Return true
-            },
-            child: Text(
-              "Yes",
-              style: GoogleFonts.rajdhani(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
 
   }
@@ -221,7 +300,7 @@ class _EditProfileState extends State<Profile> {
     try{
       await refImgToUpload.putFile(File(img!.path));
       imgURL = await refImgToUpload.getDownloadURL();
-      await FirebaseFirestore.instance.collection("user_details").doc(FirebaseAuth.instance.currentUser!.uid).set({
+      await FirebaseFirestore.instance.collection("user_details").doc(FirebaseAuth.instance.currentUser!.uid).update({
         "profile_pic": imgURL,
       }).then((res) {
         setState(() {});
@@ -424,7 +503,7 @@ class _EditProfileState extends State<Profile> {
                                 ElevatedButton(
                                   onPressed: () async{
                                     await saveProfile(widget.mpp).then((updatedData){
-                                      Navigator.of(context).pop(updatedData);
+                                      if(updatedData) Navigator.of(context).pop();
                                       setState(() {});
                                     }
                                     );

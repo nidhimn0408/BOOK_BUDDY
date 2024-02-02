@@ -67,14 +67,15 @@ class _AccountState extends State<Account> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<Map<String, dynamic>?> _editProfile() async {
-    var userData = await getUserData();
-
-    var updatedData = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Profile(mpp: userData)),
-    );
-
-    return updatedData;
+    await getUserData().then((updatedData) async{
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Profile(mpp: updatedData)),
+      ).then((res){
+        return res;
+      });
+    });
+    return null;
   }
 
 
@@ -180,12 +181,12 @@ class _AccountState extends State<Account> {
           res2.data() as Map<String, dynamic>? ?? {};
 
       return {
-        "user_name": data1?['user_name'] ?? "Profile",
-        "email": data1?['email'] ?? "",
-        "address": data2?['address'] ?? "",
-        "profile_pic": data2?['profile_pic'] ?? defImg,
-        "age": data2?['age'] ?? -1,
-        "phone_number": data2?['phone_number'] ?? -1,
+        "user_name": data1['user_name'] ?? "Profile",
+        "email": data1['email'] ?? "",
+        "address": data2['address'] ?? "",
+        "profile_pic": data2['profile_pic'] ?? defImg,
+        "age": data2['age'] ?? -1,
+        "phone_number": data2['phone_number'] ?? -1,
       };
     } catch (e) {
       return {
@@ -201,143 +202,147 @@ class _AccountState extends State<Account> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-       backgroundColor: Vx.purple200,
-      // appBar: CustomTopAppBar(
-      //   text: "Account Details",
-      //   show: true,
-      //   context: context,
-      // ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: getUserData(),
-        builder: (context, snapShot) {
-          if (snapShot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: SizedBox(
-                height: 30,
-                width: 30,
-                child: CircularProgressIndicator(),
-              ),
-            );
-          } else if (snapShot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Error",
-                    style: GoogleFonts.rajdhani(
-                      fontSize: 50,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  )
-                ],
-              ),
-            );
-          } else {
-            Map<String, dynamic> data =
-                snapShot.data ?? {"user_name": "Profile", "email": "", "address": "`", "profile_pic": defImg, "age": -1, "phone_number": -1};
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-              child: Center(
-                child: Column(
-                  children: [
-                    Container(
-                      // margin: const EdgeInsets.only(top: 10),
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 3,
+    return Builder(
+      builder: (context) {
+        return Scaffold(
+           backgroundColor: Vx.purple200,
+          // appBar: CustomTopAppBar(
+          //   text: "Account Details",
+          //   show: true,
+          //   context: context,
+          // ),
+          body: FutureBuilder<Map<String, dynamic>>(
+            future: getUserData(),
+            builder: (context, snapShot) {
+              if (snapShot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: CircularProgressIndicator(),
+                  ),
+                );
+              } else if (snapShot.hasError) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Error",
+                        style: GoogleFonts.rajdhani(
+                          fontSize: 50,
+                          fontWeight: FontWeight.w800,
                         ),
-                        borderRadius: BorderRadius.circular(100),
+                      )
+                    ],
+                  ),
+                );
+              } else {
+                Map<String, dynamic> data =
+                    snapShot.data ?? {"user_name": "Profile", "email": "", "address": "`", "profile_pic": defImg, "age": -1, "phone_number": -1};
+                return SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          // margin: const EdgeInsets.only(top: 10),
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 3,
+                            ),
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.network(data["profile_pic"])),
+                        ),
+                        const SizedBox(height: 10,),
+                        Text(
+                          "${data["user_name"]}",
+                          style: GoogleFonts.rajdhani(
+                            fontSize: 40,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          "${data["email"]}",
+                          style: GoogleFonts.rajdhani(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                              fontStyle: FontStyle.italic),
+                        ),
+                        const SizedBox(height: 20,),
+                    ElevatedButton(
+                      onPressed: () async {
+                        var updatedData = await _editProfile();
+                        if (updatedData != null) {
+                          setState(() {
+                            // Update the user data in the Account page
+                            // You may need to handle the data accordingly based on your implementation
+                          });
+                        }
+                        // Call any other logic you want to perform after the profile is edited
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(327, 50),
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                        elevation: 1,
+                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 0),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                        ),
                       ),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Image.network(data["profile_pic"])),
-                    ),
-                    const SizedBox(height: 10,),
-                    Text(
-                      "${data["user_name"]}",
-                      style: GoogleFonts.rajdhani(
-                        fontSize: 40,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      "${data["email"]}",
-                      style: GoogleFonts.rajdhani(
+                      child: Text(
+                        "Edit Profile",
+                        style: GoogleFonts.rajdhani(
+                          fontWeight: FontWeight.w600,
                           fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          fontStyle: FontStyle.italic),
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 20,),
-                ElevatedButton(
-                  onPressed: () async {
-                    var updatedData = await _editProfile();
-                    if (updatedData != null) {
-                      setState(() {
-                        // Update the user data in the Account page
-                        // You may need to handle the data accordingly based on your implementation
-                      });
-                    }
-                    // Call any other logic you want to perform after the profile is edited
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(327, 50),
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    elevation: 1,
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 0),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                    ),
-                  ),
-                  child: Text(
-                    "Edit Profile",
-                    style: GoogleFonts.rajdhani(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
 
-                    const SizedBox(height: 20,),
-                    const Divider(),
-                    const SizedBox(height: 10,),
-                    _ListBuilder(
-                      data: "Age: ${data["age"] == -1 ? 'N/A' : data["age"]}",
-                      leadIcon: Icons.accessibility_new_outlined,
-                      trailIcon: false,
-                      onTap: () {},
-                    ).buildListTile(),
-                    _ListBuilder(
-                      data: "Address: ${data["address"] == -1 ? 'N/A' : data["address"]}",
-                      leadIcon: Icons.location_on,
-                      trailIcon: false,
-                      onTap: () {},
-                    ).buildListTile(),
-                    _ListBuilder(
-                      data: "Ph: ${data["phone_number"] == -1 ? 'N/A' : data["phone_number"]}",
-                      leadIcon: Icons.phone_android,
-                      trailIcon: false,
-                      onTap: () {},
-                    ).buildListTile(),
-                    _ListBuilder(
-                      data: "Log Out",
-                      leadIcon: Icons.logout,
-                      col: Colors.red,
-                      onTap: signOut,
-                    ).buildListTile(),
-                  ],
-                ),
-              ),
-            );
-          }
-        },
-      ),
+                        const SizedBox(height: 20,),
+                        const Divider(),
+                        const SizedBox(height: 10,),
+                        _ListBuilder(
+                          data: "Age: ${data["age"] == -1 ? 'N/A' : data["age"]}",
+                          leadIcon: Icons.accessibility_new_outlined,
+                          trailIcon: false,
+                          onTap: () {},
+                        ).buildListTile(),
+                        _ListBuilder(
+                          data: "Address: ${data["address"] == -1 ? 'N/A' : data["address"]}",
+                          leadIcon: Icons.location_on,
+                          trailIcon: false,
+                          onTap: () {},
+                        ).buildListTile(),
+                        _ListBuilder(
+                          data: "Ph: ${data["phone_number"] == -1 ? 'N/A' : data["phone_number"]}",
+                          leadIcon: Icons.phone_android,
+                          trailIcon: false,
+                          onTap: () {},
+                        ).buildListTile(),
+                        _ListBuilder(
+                          data: "Log Out",
+                          leadIcon: Icons.logout,
+                          col: Colors.red,
+                          onTap: signOut,
+                        ).buildListTile(),
+                      ],
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        );
+      }
     );
   }
 }
