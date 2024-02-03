@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class BookCard extends StatelessWidget {
+class BookCard extends StatefulWidget {
   final String coverUrl;
   final String title;
   final VoidCallback ontap;
@@ -11,11 +11,16 @@ class BookCard extends StatelessWidget {
       required this.ontap});
 
   @override
+  State<BookCard> createState() => _BookCardState();
+}
+
+class _BookCardState extends State<BookCard> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 20),
       child: InkWell(
-        onTap: ontap,
+        onTap: widget.ontap,
         child: SizedBox(
           width: 120,
           child: Column(
@@ -37,14 +42,14 @@ class BookCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    coverUrl,
+                    widget.coverUrl,
                     width: 120,
                   ),
                 ),
               ),
               const SizedBox(height: 10),
               Text(
-                title,
+                widget.title,
                 textAlign: TextAlign.center,
                 maxLines: 1,
                 style: Theme.of(context).textTheme.bodyMedium,

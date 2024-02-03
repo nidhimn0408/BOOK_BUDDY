@@ -4,10 +4,15 @@ import '../BookDetails/BookActionBtn.dart';
 import '../BookDetails/HeaderWidget.dart';
 import 'package:flutter/material.dart';
 
-class BookDetails extends StatelessWidget {
+class BookDetails extends StatefulWidget {
   final BookModel book;
   const BookDetails({super.key, required this.book});
 
+  @override
+  State<BookDetails> createState() => _BookDetailsState();
+}
+
+class _BookDetailsState extends State<BookDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,14 +26,14 @@ class BookDetails extends StatelessWidget {
                 children: [
                   Expanded(
                     child: BookDetailsHeader(
-                      coverUrl: book.coverUrl!,
-                      title: book.title!,
-                      author: book.author!,
-                      description: book.description!,
-                      rating: book.rating!,
-                      pages: book.pages.toString(),
-                      langugae: book.language.toString(),
-                      audioLen: book.audioLen!,
+                      coverUrl: widget.book.coverUrl!,
+                      title: widget.book.title!,
+                      author: widget.book.author!,
+                      description: widget.book.description!,
+                      rating: widget.book.rating!,
+                      pages: widget.book.pages.toString(),
+                      langugae: widget.book.language.toString(),
+                      audioLen: widget.book.audioLen!,
                     ),
                   )
                 ],
@@ -53,7 +58,7 @@ class BookDetails extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          book.description!,
+                          widget.book.description!,
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
@@ -73,7 +78,7 @@ class BookDetails extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          book.aboutAuthor!,
+                          widget.book.aboutAuthor!,
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
@@ -81,7 +86,7 @@ class BookDetails extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   BookActionBtn(
-                    bookUrl: book.bookurl!,
+                    bookUrl: widget.book.bookurl!,
                   ),
                 ],
               ),

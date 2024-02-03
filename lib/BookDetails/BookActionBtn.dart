@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class BookActionBtn extends StatelessWidget {
+class BookActionBtn extends StatefulWidget {
   final String bookUrl;
   const BookActionBtn({super.key, required this.bookUrl});
+
+  @override
+  State<BookActionBtn> createState() => _BookActionBtnState();
+}
+
+class _BookActionBtnState extends State<BookActionBtn> {
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +26,15 @@ class BookActionBtn extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              Get.to(BookPage(
-                bookUrl: bookUrl,
-              ));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context){
+              //       return BookPage(
+              //         bookUrl: widget.bookUrl,
+              //       );
+              //     })
+              Get.to((BookPage));
+              /**/
             },
             child: Row(
               children: [
@@ -31,9 +43,9 @@ class BookActionBtn extends StatelessWidget {
                 Text(
                   "READ BOOK",
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.background,
-                        letterSpacing: 1.2,
-                      ),
+                    color: Theme.of(context).colorScheme.background,
+                    letterSpacing: 1.2,
+                  ),
                 ),
               ],
             ),
@@ -53,9 +65,9 @@ class BookActionBtn extends StatelessWidget {
               Text(
                 "PLAY BOOK",
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.background,
-                      letterSpacing: 1.5,
-                    ),
+                  color: Theme.of(context).colorScheme.background,
+                  letterSpacing: 1.5,
+                ),
               ),
             ],
           )
@@ -64,3 +76,4 @@ class BookActionBtn extends StatelessWidget {
     );
   }
 }
+

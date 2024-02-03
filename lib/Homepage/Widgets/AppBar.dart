@@ -32,7 +32,7 @@ class HomeAppBar extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Account()),
+              MaterialPageRoute(builder: (context) => const Account()),
             );
           },
           child: CircleAvatar(

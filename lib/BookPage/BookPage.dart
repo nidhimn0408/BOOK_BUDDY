@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class BookPage extends StatelessWidget {
+class BookPage extends StatefulWidget {
   final String bookUrl;
   const BookPage({super.key, required this.bookUrl});
 
+  @override
+  State<BookPage> createState() => _BookPageState();
+}
+
+class _BookPageState extends State<BookPage> {
   @override
   Widget build(BuildContext context) {
     PdfController pdfController = Get.put(PdfController());
@@ -35,7 +40,7 @@ class BookPage extends StatelessWidget {
         ),
       ),
       body: SfPdfViewer.network(
-        bookUrl,
+        widget.bookUrl,
         key: pdfController.pdfViewerKey,
       ),
     );
