@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class MyInputTextField extends StatelessWidget {
+class MyInputTextField extends StatefulWidget {
   const MyInputTextField({super.key});
 
+  @override
+  State<MyInputTextField> createState() => _MyInputTextFieldState();
+}
+
+class _MyInputTextFieldState extends State<MyInputTextField> {
   @override
   Widget build(BuildContext context) {
     BookController bookController = Get.put(BookController());

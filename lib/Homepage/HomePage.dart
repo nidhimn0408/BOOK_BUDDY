@@ -13,9 +13,14 @@ import '../Homepage/Widgets/MyInputeTextField.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 final _fs = FirebaseFirestore.instance;
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> getUserData() async {
     try {
       var id = FirebaseAuth.instance.currentUser!.uid;
@@ -24,8 +29,8 @@ class HomePage extends StatelessWidget {
       Map<String, dynamic>? data1 =
           res1.data() as Map<String, dynamic>? ?? {};
       return {
-        "user_name": data1?['user_name'] ?? "Profile",
-        "email": data1?['email'] ?? "",
+        "user_name": data1['user_name'] ?? "Profile",
+        "email": data1['email'] ?? "",
       };
     } catch (e) {
       return {
@@ -100,11 +105,11 @@ class HomePage extends StatelessWidget {
                                       .textTheme
                                       .labelSmall
                                       ?.copyWith(
-                                        fontSize: 14,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .background,
-                                      ),
+                                    fontSize: 14,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                  ),
                                 ),
                               ),
                             ],
@@ -120,10 +125,10 @@ class HomePage extends StatelessWidget {
                                     .textTheme
                                     .labelMedium
                                     ?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .background,
-                                    ),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .background,
+                                ),
                               ),
                             ],
                           ),
@@ -134,9 +139,9 @@ class HomePage extends StatelessWidget {
                               children: categoryData
                                   .map(
                                     (e) => CategoryWidget(
-                                        iconPath: e["icon"]!,
-                                        btnName: e["lebel"]!),
-                                  )
+                                    iconPath: e["icon"]!,
+                                    btnName: e["lebel"]!),
+                              )
                                   .toList(),
                             ),
                           )
@@ -164,20 +169,24 @@ class HomePage extends StatelessWidget {
                   SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Obx(
-                        () => Row(
+                            () => Row(
                           children: bookController.bookData
                               .map(
                                 (e) => BookCard(
-                                  title: e.title!,
-                                  coverUrl: e.coverUrl!,
-                                  ontap: () {
-                                    Get.to(BookDetails(
-                                      book: e,
-                                    ));
-                                  },
-                                ),
-                              )
-                              .toList(),
+                              title: e.title!,
+                              coverUrl: e.coverUrl!,
+                              ontap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context){
+                                      return BookDetails(
+                                        book: e,
+                                      );
+                                    })
+                                );
+                              },
+                            ),
+                          ).toList(),
                         ),
                       )),
                   const SizedBox(height: 10),
@@ -191,22 +200,22 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Obx(() => Column(
-                        children: bookController.bookData
-                            .map(
-                              (e) => BookTile(
-                                ontap: () {
-                                  Get.to(BookDetails(book: e));
-                                },
-                                title: e.title!,
-                                coverUrl: e.coverUrl!,
-                                author: e.author!,
-                                price: e.price!,
-                                rating: e.rating!,
-                                totalRating: 12,
-                              ),
-                            )
-                            .toList(),
-                      ))
+                    children: bookController.bookData
+                        .map(
+                          (e) => BookTile(
+                        ontap: () {
+                          Get.to(BookDetails(book: e));
+                        },
+                        title: e.title!,
+                        coverUrl: e.coverUrl!,
+                        author: e.author!,
+                        price: e.price!,
+                        rating: e.rating!,
+                        totalRating: 12,
+                      ),
+                    )
+                        .toList(),
+                  ))
                 ],
               ),
             ),
@@ -216,3 +225,4 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+

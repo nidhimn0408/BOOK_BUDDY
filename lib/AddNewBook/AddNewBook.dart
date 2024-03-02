@@ -5,9 +5,14 @@ import '../Controller/BookController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AddNewBookPage extends StatelessWidget {
+class AddNewBookPage extends StatefulWidget {
   const AddNewBookPage({super.key});
 
+  @override
+  State<AddNewBookPage> createState() => _AddNewBookPageState();
+}
+
+class _AddNewBookPageState extends State<AddNewBookPage> {
   @override
   Widget build(BuildContext context) {
     BookController bookController = Get.put(BookController());

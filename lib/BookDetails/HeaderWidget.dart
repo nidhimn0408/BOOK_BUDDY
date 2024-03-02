@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../Components/BackButton.dart';
 
-class BookDetailsHeader extends StatelessWidget {
+class BookDetailsHeader extends StatefulWidget {
   final String coverUrl;
   final String title;
   final String author;
@@ -22,6 +22,11 @@ class BookDetailsHeader extends StatelessWidget {
       required this.langugae,
       required this.audioLen});
 
+  @override
+  State<BookDetailsHeader> createState() => _BookDetailsHeaderState();
+}
+
+class _BookDetailsHeaderState extends State<BookDetailsHeader> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -46,7 +51,7 @@ class BookDetailsHeader extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image.network(
-                coverUrl,
+                widget.coverUrl,
                 width: 170,
               ),
             )
@@ -54,7 +59,7 @@ class BookDetailsHeader extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         Text(
-          title,
+          widget.title,
           maxLines: 1,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
@@ -62,14 +67,14 @@ class BookDetailsHeader extends StatelessWidget {
               ),
         ),
         Text(
-          "Author : $author",
+          "Author : ${widget.author}",
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
         ),
         const SizedBox(height: 10),
         Text(
-          description,
+          widget.description,
           maxLines: 2,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -89,7 +94,7 @@ class BookDetailsHeader extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  rating,
+                  widget.rating,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.background,
                       ),
@@ -105,7 +110,7 @@ class BookDetailsHeader extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  pages,
+                  widget.pages,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.background,
                       ),
@@ -121,7 +126,7 @@ class BookDetailsHeader extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  langugae,
+                  widget.langugae,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.background,
                       ),
@@ -137,7 +142,7 @@ class BookDetailsHeader extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  audioLen,
+                  widget.audioLen,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.background,
                       ),

@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
-class MyBackButton extends StatelessWidget {
+class MyBackButton extends StatefulWidget {
   const MyBackButton({super.key});
 
+  @override
+  State<MyBackButton> createState() => _MyBackButtonState();
+}
+
+class _MyBackButtonState extends State<MyBackButton> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
