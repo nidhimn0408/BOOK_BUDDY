@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import '../login/login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -7,6 +10,8 @@ class SignUp extends StatefulWidget {
   @override
   State<SignUp> createState() => _SignUpState();
 }
+get defImg =>
+    "https://firebasestorage.googleapis.com/v0/b/bookbuddy-62925.appspot.com/o/images%2F1706677934840?alt=media&token=15bb1dc5-9978-4e3d-b043-8471d88e42cd";
 
 class _SignUpState extends State<SignUp> {
   TextEditingController emailController = TextEditingController();
@@ -24,16 +29,40 @@ class _SignUpState extends State<SignUp> {
       showError("Passwords do not match!");
     } else {
       try {
-        UserCredential userCredential =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
           password: password,
-        );
-        if (userCredential.user != null) {
-          // Only navigate if account creation is successful
-          Navigator.pop(context);
-        }
-      } on FirebaseAuthException catch (ex) {
+          email: email,
+        ).then((result) async {
+          if(result.user != null){
+            User? u = FirebaseAuth.instance.currentUser;
+            String? userId = u!.uid;
+            await FirebaseFirestore.instance.collection('users')
+                .doc(userId)
+                .set({
+              'email': email,
+              'user_name': " ",
+            }).then((value) async {
+              await FirebaseFirestore.instance.collection("user_details")
+                  .doc(userId)
+                  .set({
+                'user_id': userId,
+                'address': "`",
+                'age': -1,
+                'phone_number': -1,
+                'profile_pic': defImg,
+              }).then((res) {
+                FirebaseAuth.instance.signOut();
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              });
+            });
+          }
+        });
+      }
+      on FirebaseAuthException catch (ex) {
         handleError(ex.code);
       } catch (ex) {
         handleError("An unexpected error occurred");
