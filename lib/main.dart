@@ -27,7 +27,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Book Buddy',
       home: (FirebaseAuth.instance.currentUser != null)
           ? const NavigationMenu()

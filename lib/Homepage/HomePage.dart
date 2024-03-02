@@ -186,8 +186,7 @@ class _HomePageState extends State<HomePage> {
                                 );
                               },
                             ),
-                          )
-                              .toList(),
+                          ).toList(),
                         ),
                       )),
                   const SizedBox(height: 10),

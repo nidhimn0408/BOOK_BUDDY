@@ -26,15 +26,15 @@ class _BookActionBtnState extends State<BookActionBtn> {
         children: [
           InkWell(
             onTap: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(builder: (context){
-              //       return BookPage(
-              //         bookUrl: widget.bookUrl,
-              //       );
-              //     })
-              Get.to((BookPage));
-              /**/
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context){
+                    return BookPage(
+                      bookUrl: widget.bookUrl,
+                    );
+                  })
+              );
+              // Get.to((BookPage))
             },
             child: Row(
               children: [

@@ -17,7 +17,7 @@ LinearGradient lgTop() {
   );
 }
 
-class CustomTopAppBar extends StatelessWidget implements PreferredSizeWidget{
+class CustomTopAppBar extends StatefulWidget implements PreferredSizeWidget{
   final String text;
   final bool show;
   final BuildContext context;
@@ -28,6 +28,15 @@ class CustomTopAppBar extends StatelessWidget implements PreferredSizeWidget{
     required this.context,
   });
 
+  @override
+  State<CustomTopAppBar> createState() => _CustomTopAppBarState();
+
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize => throw UnimplementedError();
+}
+
+class _CustomTopAppBarState extends State<CustomTopAppBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,11 +51,11 @@ class CustomTopAppBar extends StatelessWidget implements PreferredSizeWidget{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            show? SizedBox(
+            widget.show? SizedBox(
               height: 45,
               width: 45,
               child: ElevatedButton(
-                onPressed: () => Navigator.pop(this.context),
+                onPressed: () => Navigator.pop(this.widget.context),
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.zero,
                   padding: EdgeInsets.zero,
@@ -64,7 +73,7 @@ class CustomTopAppBar extends StatelessWidget implements PreferredSizeWidget{
             Container(
               margin: const EdgeInsets.only(left: 20),
               child: Text(
-                text,
+                widget.text,
                 style: GoogleFonts.rajdhani(
                   fontSize: 23,
                   fontWeight: FontWeight.w800,

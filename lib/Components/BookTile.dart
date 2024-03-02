@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class BookTile extends StatelessWidget {
+class BookTile extends StatefulWidget {
   final String title;
   final String coverUrl;
   final String author;
@@ -22,11 +22,16 @@ class BookTile extends StatelessWidget {
   });
 
   @override
+  State<BookTile> createState() => _BookTileState();
+}
+
+class _BookTileState extends State<BookTile> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: InkWell(
-        onTap: ontap,
+        onTap: widget.ontap,
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -52,7 +57,7 @@ class BookTile extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    coverUrl,
+                    widget.coverUrl,
                     width: 100,
                   ),
                 ),
@@ -63,16 +68,16 @@ class BookTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    widget.title,
                     maxLines: 2,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 4),
-                  Text("By : $author",
+                  Text("By : ${widget.author}",
                       style: Theme.of(context).textTheme.labelMedium),
                   const SizedBox(height: 5),
                   Text(
-                    "Price : $price",
+                    "Price : ${widget.price}",
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -82,11 +87,11 @@ class BookTile extends StatelessWidget {
                     children: [
                       SvgPicture.asset("Assets/Icons/star.svg"),
                       Text(
-                        rating,
+                        widget.rating,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       Text(
-                        "($totalRating ratings)",
+                        "(${widget.totalRating} ratings)",
                         style: Theme.of(context).textTheme.labelMedium,
                       ),
                     ],
