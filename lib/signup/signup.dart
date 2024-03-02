@@ -97,7 +97,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+      backgroundColor: const Color(0x93664FA4),
       body: Center(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -195,7 +195,7 @@ class _SignUpState extends State<SignUp> {
                                 backgroundColor: const Color(0xFF8D898E),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 12.0,
-                                  horizontal: 85.0,
+                                  horizontal: 100.0,
                                 ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),

@@ -21,7 +21,7 @@ class _BookDetailsState extends State<BookDetails> {
           children: [
             Container(
               padding: const EdgeInsets.all(20),
-              color: primaryColor,
+              color: const Color(0xCB664FA4),
               child: Row(
                 children: [
                   Expanded(

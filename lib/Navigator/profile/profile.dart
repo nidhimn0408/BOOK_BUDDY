@@ -37,7 +37,7 @@ class _EditProfileState extends State<Profile> {
             fontSize: 16,
           ),
         ),
-        backgroundColor: col,
+        backgroundColor: const Color(0x93664FA4),
         duration: const Duration(seconds: 3),
       ),
     );
@@ -350,9 +350,9 @@ class _EditProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        backgroundColor: Vx.purple300,
+        backgroundColor: const Color(0x93664FA4),
         appBar: AppBar(
-          foregroundColor: Colors.white, backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Colors.white, backgroundColor:const Color(0x93664FA4),
           actions: [
             IconButton(
               icon: const Icon(Icons.logout),
@@ -474,7 +474,7 @@ class _EditProfileState extends State<Profile> {
                                   child: TextField(
                                     controller: phNoCtrl,
                                     decoration: InputDecoration(
-                                        hintText: "${(widget.mpp['phone_number']!=-1)?widget.mpp['phone_number'] : "Not set yet"}",
+                                        hintText: "${(widget.mpp['phone_number']!=-1)?widget.mpp['phone_number'] : "Enter phone number"}",
                                         fillColor: Colors.grey.shade100,
                                         filled: true,
                                         border: OutlineInputBorder(
@@ -490,7 +490,7 @@ class _EditProfileState extends State<Profile> {
                                   child: TextField(
                                     controller: ageCtrl,
                                     decoration: InputDecoration(
-                                        hintText: "${(widget.mpp['age']!=-1)?widget.mpp['age'] : "Not set yet"}",
+                                        hintText: "${(widget.mpp['age']!=-1)?widget.mpp['age'] : "Enter Age"}",
                                         fillColor: Colors.grey.shade100,
                                         filled: true,
                                         border: OutlineInputBorder(

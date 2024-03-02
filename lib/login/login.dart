@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFD3AFE0),
+      backgroundColor: const Color(0x93664FA4),
       body: Center(
         child: SingleChildScrollView(
           child: ConstrainedBox(
@@ -99,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Text(
                               'Book Buddy',
                               style: TextStyle(
+                                // fontFamily: ('Inter'),
                                 fontSize: 40.0,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.deepPurple,
@@ -108,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Text(
                               'Log In',
                               style: TextStyle(
-                                fontSize: 18.0,
+                                fontSize: 24.0,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                               ),
@@ -146,12 +147,30 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             const SizedBox(height: 20.0),
+
                             ElevatedButton(
                               onPressed: () {
                                 // Implement your login logic here
                                 login();
                               },
-                              child: const Text('Log In'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF8D898E),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12.0,
+                                  horizontal: 108.0,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                ),
+                              ),
+                              child: const Text(
+                                  'Log In',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 22.0,
+                              ),
+                            ),
                             ),
                             const SizedBox(height: 10.0),
                             TextButton(
@@ -164,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                               },
                               child: const Text(
                                 'Create New Account',
-                                style: TextStyle(fontSize: 14.0),
+                                style: TextStyle(fontSize: 18.0),
                               ),
                             ),
                           ],

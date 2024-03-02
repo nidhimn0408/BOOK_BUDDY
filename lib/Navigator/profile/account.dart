@@ -205,7 +205,7 @@ class _AccountState extends State<Account> {
     return Builder(
       builder: (context) {
         return Scaffold(
-           backgroundColor: Vx.purple200,
+           backgroundColor: const Color(0x93664FA4),
           // appBar: CustomTopAppBar(
           //   text: "Account Details",
           //   show: true,
