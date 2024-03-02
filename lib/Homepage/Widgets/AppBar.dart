@@ -28,7 +28,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
             },
             child: SvgPicture.asset("assets/images/dashboard.svg")),
         Text(
-          "E-BOOK",
+          "BOOK BUDDY",
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 color: Theme.of(context).colorScheme.background,
               ),

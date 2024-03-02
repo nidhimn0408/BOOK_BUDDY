@@ -16,9 +16,9 @@ class _ProfileState extends State<myBook> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFD3AFE0),
+      backgroundColor: const Color(0xFFB8A4D4),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFD3AFE0),
+        backgroundColor: const Color(0xFFB8A4D4),
         title: const Text('MY BOOKS', style: TextStyle(fontSize: 20) ),
         centerTitle: true,
       ),
@@ -120,7 +120,7 @@ class BookStrip extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: 40,
-        color: const Color(0xFF9B579D), // You can change the color as needed
+        color: const Color(0xE0664FA4), // You can change the color as needed
         margin: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

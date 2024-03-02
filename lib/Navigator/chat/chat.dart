@@ -18,11 +18,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFD3AFE0),
+        backgroundColor: const Color(0x93664FA4),
         title: const Text('Chat Screen'),
       ),
       body: Container(
-        color: const Color(0xFFD3AFE0),
+        color: const Color(0x93664FA4),
         child: Column(
           children: [
             const SizedBox(height: 16.0),
@@ -112,11 +112,11 @@ class _ChatScreenState extends State<ChatScreen> {
           isSent: true,
           text: messageController.text,
         ));
-        messages.add(ChatMessage(
-          isSent: false,
-          text: 'Received: ${messageController.text}',
-        ));
-        messageController.clear();
+        // messages.add(ChatMessage(
+        //   isSent: false,
+        //   text: 'Received: ${messageController.text}',
+        // ));
+         messageController.clear();
       });
     }
   }

@@ -8,11 +8,11 @@ class CreateClubPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFD3AFE0),
+        backgroundColor: const Color(0x93664FA4),
         title: const Text('Create Book Club'),
       ),
       body: Container(
-        color: const Color(0xFFD3AFE0),
+        color: const Color(0x93664FA4),
         padding: const EdgeInsets.all(16.0),
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
