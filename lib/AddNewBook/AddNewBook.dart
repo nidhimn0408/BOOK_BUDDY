@@ -13,9 +13,17 @@ class AddNewBookPage extends StatefulWidget {
 }
 
 class _AddNewBookPageState extends State<AddNewBookPage> {
+  //final BookController bookController = Get.put(BookController()); // Move it here
+  late final BookController bookController;
+  @override
+  void initState() {
+    super.initState();
+    bookController = Get.find<BookController>() ;
+    // Initialize anything else needed in the initState
+  }
   @override
   Widget build(BuildContext context) {
-    BookController bookController = Get.put(BookController());
+    //BookController bookController = Get.put(BookController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(

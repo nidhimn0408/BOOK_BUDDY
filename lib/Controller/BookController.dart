@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../Config/Messages.dart';
 import '../Models/BookModel.dart';
 import 'package:file_picker/file_picker.dart';
@@ -79,11 +80,27 @@ class BookController extends GetxController {
     var uuid = const Uuid();
     var filename = uuid.v1();
     var storageRef = storage.ref().child("Images/$filename");
-    String downloadURL = await storageRef.getDownloadURL();
-    imageUrl.value = downloadURL;
-    print("Download URL: $downloadURL");
-    isImageUploading.value = false;
+
+    try {
+      // Upload image to Firebase Storage
+      await storageRef.putFile(image);
+
+      // Get the download URL after the upload is complete
+      String downloadURL = await storageRef.getDownloadURL();
+
+      // Update the imageUrl
+      imageUrl.value = downloadURL;
+
+      print("Download URL: $downloadURL");
+    } catch (e) {
+      // Handle upload errors
+      print("Error uploading image: $e");
+    } finally {
+      // Set isImageUploading to false after upload (whether successful or not)
+      isImageUploading.value = false;
+    }
   }
+
 
   void createBook() async {
     isPostUploading.value = true;
@@ -104,12 +121,22 @@ class BookController extends GetxController {
       rating: "",
     );
 
-    log("done");
-    await db.collection("Books").add(newBook.toJson()).then((res){
+    // log("done");
+    // await db.collection("Books").add(newBook.toJson()).then((res){
+    //   successMessage("Book added to the db");
+    //   getAllBooks();
+    //   getUserBook();
+    // });
+    try {
+      await db.collection("Books").add(newBook.toJson());
       successMessage("Book added to the db");
       getAllBooks();
       getUserBook();
-    });
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error adding book: $e");
+      }
+    }
     addBookInUserDb(newBook);
     isPostUploading.value = false;
     title.clear();
