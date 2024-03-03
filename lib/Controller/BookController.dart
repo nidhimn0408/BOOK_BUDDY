@@ -137,7 +137,7 @@ class BookController extends GetxController {
         print("Error adding book: $e");
       }
     }
-    addBookInUserDb(newBook);
+    //addBookInUserDb(newBook);
     isPostUploading.value = false;
     title.clear();
     des.clear();
